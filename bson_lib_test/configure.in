@@ -1,0 +1,35 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+#AC_PREREQ([2.63])
+#modified by Aimer :
+#this line means final executable file name , it can be considered 
+#as the project name 
+AC_INIT(Hello_World)
+
+#add by Aimer :
+#this line means in this project I will add third party libs 
+#such as bson , boost and so on 
+AC_USE_SYSTEM_EXTENSIONS
+
+#add by Aimer :AM_INIT_AUTOMAKE( executable file name , version number )
+AM_INIT_AUTOMAKE(Hello_World,1.0)
+
+AC_CONFIG_SRCDIR([Main.cpp])
+AC_CONFIG_HEADERS([config.h])
+
+# Checks for programs.
+AC_PROG_CXX
+# add by Aimer 
+AC_PROG_CC
+
+# Checks for libraries.
+
+# Checks for header files.
+
+# Checks for typedefs, structures, and compiler characteristics.
+
+# Checks for library functions.
+
+#modified by Aimer
+AC_OUTPUT(Makefile)
