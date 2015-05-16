@@ -23,9 +23,9 @@ class pipe
   public :
 	pipe () ;
 	~piep () ;
-        void write( const void *buf , int len ) ;
-    	void read ( void *buf , int len ) ;
-	int  get_read_descr () ;
+        void write_in_pipe 	( const void *buf , int len ) ;
+    	void read_from_pipe 	( void *buf , int len ) ;
+	int  get_read_descr 	() ;
 	
  private :
 	int pipe[2]  ;
