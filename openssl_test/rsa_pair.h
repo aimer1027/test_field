@@ -7,11 +7,18 @@
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
 #include <openssl/err.h>
+#include <openssl/bn.h> // this is for the BN_new
+
 
 class rsaPair
 {
   public :
-	rsaPair ( std::string & pub_k_path , std::string & pri_key_path, std::string & psword ) ;
+        rsaPair () 
+        {
+           pub_key = NULL ;
+           pri_key = NULL ;
+	}
+	rsaPair ( std::string  pub_k_path , std::string  pri_key_path, std::string  psword ) ;
 	~rsaPair () ;
 	
 	int create_key_pair () ;
