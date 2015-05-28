@@ -42,7 +42,7 @@ rsaPair::~rsaPair ()
 }
 
 
-int create_key_pair ()
+int rsaPair::create_key_pair ()
 {
   RSA *rsa ;
   int modulelen = 1024 ;
@@ -69,7 +69,54 @@ int create_key_pair ()
 	return -1 ;
   }
 
+//---------------------------------------------------------------
+  
+  // public key
+  BIO *bioPtr = BIO_new ( BIO_s_file () ) ;
 
+  
+  //----- open public key store file ------
+  if ( BIO_write_filename ( bioPtr , (void*)pub_key_path.c_str ()) <= 0 )
+  {
+	perror ("failed to open public key file ") ;
+	return -1 ;
+  }
+	
+  //----- write public key into file -----
+ 
+  if ( PEM_write_bio_RSAPublicKey( bioPtr , rsa ) != 1 )
+  {
+	 perror ("failed to write RSA public key into file") ;
+	return -1 ;
+  }
+
+  //----- if we get here , everything goes well -----
+  printf ("generated RSA public key already written into file %s \n" , pub_key_path.c_str()) ;
+  
+  BIO_free_all( bioPtr ) ; // don't forget release and free the allocated space
+
+
+//-----------------------------------------------------------------------------------------
+   //----- private key -----
+    
+   bioPtr = BIO_new_file ( pri_key_path.c_str() , "w+") ;
+   
+   if ( bioPtr == NULL )
+   {
+	perror ("failed to open file stores RSA private key ") ;
+   	return -1 ;
+   } 
+
+   if ( PEM_write_bio_RSAPrivateKey ( bioPtr , rsa ,EVP_des_ede3_ofb() ,
+			(unsigned char *)password.c_str() , password.size() , NULL , NULL ) != 1 )
+   {
+	perror ("failed write RSA private key into file") ;
+	return -1 ;
+   }
+	
+   BIO_free_all ( bioPtr ) ; // do not forget this 
+   
+   printf ("genertated RSA private key already written into file %s \n" , pri_key_path.c_str () ) ;
 
   return 0 ;
 }

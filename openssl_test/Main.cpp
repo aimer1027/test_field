@@ -30,6 +30,7 @@ int main ( int argc , char **argv )
  // rsaPair key_pair ;
   rsaPair key_pair ( pub_key_path , pri_key_path , password) ; 
   
+   key_pair.create_key_pair () ;  
   
   
   return 0 ;
