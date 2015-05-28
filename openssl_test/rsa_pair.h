@@ -11,10 +11,10 @@
 class rsaPair
 {
   public :
-	rsaPair ( std::string & pub_k_path , std::string & pri_key_path ) ;
+	rsaPair ( std::string & pub_k_path , std::string & pri_key_path, std::string & psword ) ;
 	~rsaPair () ;
 	
-	int create_key_pair ( const std::string &password) ;
+	int create_key_pair () ;
 
   private :
 	std::string pub_key_path ;
