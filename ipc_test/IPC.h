@@ -10,19 +10,20 @@
 
 namespace bi = boost::interprocess ;
 
+typedef bi::allocator<char ,bi::managed_shared_memory::segment_manager> ;
+typedef bi::basic_string<char , std::char_traits<char> , CharAllocator> bi_string ;
+
+
 class IPC
 {
-  typedef bi::allocator<char,bi::managed_shared_memory::segment_manager>
-		CharAllocator ;
-  typedef bi::basic_string<char , std::char_traits<char> , CharAllocator> bi_string ;
-
 public :
 
   IPC ( std::string shm_name) ;
   ~IPC () ;
 
-  int writter () ;
-  int reader  () ; 
+  int writter ( std::string &file_name ) ;
+  int reader  ( std::string &file_name ) ;
+ 
   int remove_shared_mem () ;
   int create_shared_mem  () ;
 
