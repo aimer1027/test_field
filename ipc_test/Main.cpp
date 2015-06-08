@@ -31,6 +31,11 @@ int main( int argc , char *argv [] )
 		perror ("reader method failed ") ;
 		return -1 ;
 	}
+
+	cout << endl ;
+	cout <<"------------------ here we gonna test another IPC node visit shared memory's content-----------------" << endl ;
+	IPC ipc2 (shared_memory_name ) ;
+	ipc2.reader(file_name) ;
 	
 	
 	return 0 ;

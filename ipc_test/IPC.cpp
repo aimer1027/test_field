@@ -10,22 +10,8 @@ using namespace std ;
 
 IPC::IPC( std::string &shared_mem_name )
 {
-  int num ;
-  string name ; 
- 
+
   shm_name_ = shared_mem_name ;
-
-  cout << "input how many files and their names which you want to shared them into shared memory"<< endl ;
-  cout << "how many" << endl ;
-  cin >> num ;
-
-  for ( int i = 0 ; i < num ; i++ )
-  {
-	cout << "file name " << endl ;
-	cin >> name ;
-	
-        file_name_list_.push_back ( name ) ;
-  }
 
 }
 
@@ -52,7 +38,11 @@ IPC::IPC( std::string &shared_mem_name )
 
 int IPC::create_shared_mem ()
 {
-   boost::interprocess::managed_shared_memory 
+  // before we create a shared memory , we should call the remove first in case of
+ // it already exist , this will cause an error happend during running time
+	remove_shared_mem () ; 
+
+  boost::interprocess::managed_shared_memory 
 		shm ( boost::interprocess::create_only ,
 			shm_name_.c_str() , 65536/2 ) ;
   return 0 ;
@@ -70,6 +60,22 @@ int IPC::init_shared_memory ()
     |  .....    |  .....        |
 
    */	
+
+  int num ;
+  string name ;
+
+  cout << "input how many files and their names which you want to shared them into shared memory"<< endl ;
+  cout << "how many" << endl ;
+  cin >> num ;
+
+  for ( int i = 0 ; i < num ; i++ )
+  {
+        cout << "file name " << endl ;
+        cin >> name ;
+
+        file_name_list_.push_back ( name ) ;
+  }	
+   
 
    // here we create a shared_memory_manager 
    boost::interprocess::managed_shared_memory shm (boost::interprocess::open_only ,
@@ -109,7 +115,9 @@ int IPC::init_shared_memory ()
 	// here we finish reading a whole file's content 
 	// next , we transfer the string type into 
 	// boost::interprocess::basic_string type	
-  
+ 
+	i_file.close() ;
+ 
 	bi_string bi_file_conent (charallocator) ;
 	bi_file_conent = file_content.c_str()  ;
 	shm.construct<bi_string>(file_name_list_[i].c_str())(bi_file_conent) ;
@@ -137,13 +145,18 @@ int IPC::reader( string &file_name )
 	
 	string file_content ;
 	
-	for ( int i(0) ; i < file_name_list_.size() ; i++ )
-	{
-		std::pair<bi_string*,boost::interprocess::managed_shared_memory::size_type>res 
-			= shm.find<bi_string>( file_name.c_str()  ) ;
+
+	std::pair<bi_string*,boost::interprocess::managed_shared_memory::size_type>res 
+		= shm.find<bi_string>( file_name.c_str()  ) ;
 		
-		file_content = string(res.first->c_str() , res.first->size() ) ;
-	}  	
+	if ( res.first == NULL )
+	{
+		perror ("[error] failed find target file in shared memory") ;
+		return -1 ;
+	}
+	
+	file_content = string(res.first->c_str() , res.first->size() ) ;
+ 	
 	
 	cout << "here is the file's content " << endl ;
  	cout <<  file_content << endl ;	
