@@ -18,10 +18,28 @@ class IPC
 {
 public :
 
-  IPC ( std::string shm_name) ;
+  // in this file reads in file name 
+  IPC ( ) ;
   ~IPC () ;
 
-  int writter ( std::string &file_name ) ;
+ /*
+	open each file by name (path) which stored in file_name_list_
+	and reads file's content one after another writes it into the shared-memory 
+ */
+	
+  int init_shared_memory() ;	
+
+
+  /**
+	this method is used to write into the file with name of file_name stored inside  shared memory 
+	with the name of shm_name_
+  */
+  int writter (std::string &file_name  ) ;
+	
+  /**
+	and this method is read the file 's contents from the shared memory 
+	prints it onto the screen 
+  */
   int reader  ( std::string &file_name ) ;
  
   int remove_shared_mem () ;
@@ -29,7 +47,8 @@ public :
 
 private :
   std::string shm_name_ ;
- 	
+  std::vector<std::string> file_name_list_ ;
+	
 } ;
 
 
