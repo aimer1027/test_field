@@ -22,6 +22,7 @@ class Process
 	std::string name ;
 	std::string shared_mem_name ;
 	
+	bool isMain ; 
 } ;
 
 
