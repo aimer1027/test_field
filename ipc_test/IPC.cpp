@@ -54,7 +54,7 @@ int IPC::create_shared_mem ()
 {
    boost::interprocess::managed_shared_memory 
 		shm ( boost::interprocess::create_only ,
-			shm_name_.c_str() , 65535*2 ) ;
+			shm_name_.c_str() , 65536/2 ) ;
   return 0 ;
 }
 
