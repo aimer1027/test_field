@@ -44,7 +44,12 @@ public :
  
   int remove_shared_mem () ;
   int create_shared_mem  () ;
-
+  
+  int get_file_num ()
+  {
+	return file_name_list_.size() ;
+  }
+	
 private :
   std::string shm_name_ ;
   std::vector<std::string> file_name_list_ ;

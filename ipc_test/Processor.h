@@ -10,12 +10,14 @@
 class Process
 {
   public :
-	Process ( std::string &_name , std::string &_shared_mem_name) ;	
+	Process ( std::string &_name , std::string &_shared_mem_name, bool isMain) ;	
 	~Process ( ) ;
-	
-	int runAsMainProc() ;
-	int runAsSubProc ( std::string & file_name ) ;
-	
+	int runProc ( std::string & file_name ) ;
+	int getSharedFileNum ()
+	{
+		if ( isMain ) return ipc->get_file_num () ;
+		else return 0 ;
+	}	
 
   private :
 	IPC *ipc ;

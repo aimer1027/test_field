@@ -148,6 +148,8 @@ int IPC::reader( string &file_name )
 
 	std::pair<bi_string*,boost::interprocess::managed_shared_memory::size_type>res 
 		= shm.find<bi_string>( file_name.c_str()  ) ;
+
+	cout << "in IPC' reader 's file name " << file_name << endl ;
 		
 	if ( res.first == NULL )
 	{

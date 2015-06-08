@@ -3,14 +3,18 @@
 #include <iostream>
 
 #include "IPC.h"
+#include "Processor.h"
 
 using namespace std ;
 
 int main( int argc , char *argv [] )
 {
-	string shared_memory_name = "Aimer" ;
-	string file_name = "/tmp/rsa_key0.txt" ;	
+	std::string shared_memory_name = "Aimer" ;
+	std::string file_name = "/tmp/rsa_key" ;	
 
+	/*
+   		// tests for class IPC
+	
 	IPC ipc ( shared_memory_name  ) ;
 
 	
@@ -37,6 +41,43 @@ int main( int argc , char *argv [] )
 	IPC ipc2 (shared_memory_name ) ;
 	ipc2.reader(file_name) ;
 	
+   */	
+	// test for class Process 
 	
+	std::string proc_name = "main " ;
+	
+	
+       
+	Process mainProc (proc_name , shared_memory_name, true  ) ;
+
+	
+	string new_file_name = file_name +"0.txt" ;	
+
+	cout <<"-------------------------- main process running ------------------------" << endl ;
+
+	mainProc.runProc (new_file_name) ;	
+
+	
+	cout <<" ------------------ sub process running ----------------------------" << endl ;
+
+	for ( int i = 1 ; i < mainProc.getSharedFileNum() ; i++ )
+	{
+		proc_name = "sub_proc " ;
+		Process subProc (proc_name, shared_memory_name , false ) ;
+		
+		char no = i +'0' ;
+		new_file_name = file_name+no+".txt" ;
+
+		cout << endl ;
+		
+		cout <<"---------------- sub process run "<< i << "------------------------"<< endl ;
+		subProc.runProc(new_file_name) ;
+	
+		cout <<"---------------- sub process " << i << "end---------------------------" <<endl ;
+	}
+
+
+
+	cout << "end of main "<< endl ;
 	return 0 ;
 }
